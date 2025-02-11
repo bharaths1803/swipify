@@ -38,6 +38,9 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    likedUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    dislikedUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    matchedUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   },
   { timestamps: true }
 );

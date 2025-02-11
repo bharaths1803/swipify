@@ -1,12 +1,23 @@
 import User from "../models/user.model.js";
 import cloudinary from "../lib/cloudinary.js";
-import { getUserSocketId, io } from "../lib/socket.js";
 
 export const getUsers = async (req, res) => {
   try {
-    const loggedinUserId = req.user._id;
+    const loggedinUser = req.user;
     const users = await User.find({
-      _id: { $ne: loggedinUserId },
+      $and: [
+        { _id: { $ne: loggedinUser._id } },
+        { _id: { $nin: loggedinUser.likedUsers } },
+        { _id: { $nin: loggedinUser.dislikedUsers } },
+        { _id: { $nin: loggedinUser.matchedUsers } },
+        { genderPreference: { $in: [loggedinUser.gender, "both"] } },
+        {
+          gender:
+            loggedinUser.genderPreference === "both"
+              ? { $in: ["male", "female"] }
+              : loggedinUser.genderPreference,
+        },
+      ],
     }).select("-password");
     res.status(201).json({ users });
   } catch (error) {
