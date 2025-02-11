@@ -4,8 +4,16 @@ import { generateToken } from "../lib/utils.js";
 
 export const signup = async (req, res) => {
   try {
-    const { username, firstName, lastName, email, password } = req.body;
-    if (!username || !email || !password || !firstName || !lastName) {
+    const { username, email, password, age, gender, genderPreference } =
+      req.body;
+    if (
+      !username ||
+      !email ||
+      !password ||
+      !age ||
+      !gender ||
+      !genderPreference
+    ) {
       return res.status(400).json({ message: `All fields are required` });
     }
     if (password.length < 6) {
@@ -29,9 +37,10 @@ export const signup = async (req, res) => {
     const newUser = await User.create({
       username,
       email,
-      firstName,
-      lastName,
       password: hashedPassword,
+      age,
+      gender,
+      genderPreference,
     });
     if (!newUser) {
       return res.status(400).json({ message: `Invalid user data` });
@@ -43,9 +52,10 @@ export const signup = async (req, res) => {
         _id: newUser._id,
         username: newUser.username,
         email: newUser.email,
-        firstName: newUser.firstName,
-        lastName: newUser.lastName,
-        updatedAt: newUser.updatedAt,
+        createdAt: newUser.createdAt,
+        age: newUser.age,
+        gender: newUser.gender,
+        genderPreference: newUser.genderPreference,
       },
     });
   } catch (error) {
@@ -56,11 +66,11 @@ export const signup = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
-    if (!email || !username || !password) {
+    const { email, password } = req.body;
+    if (!email || !password) {
       return res.status(400).json({ message: `All fields are required` });
     }
-    const user = await User.findOne({ email, username });
+    const user = await User.findOne({ email });
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(400).json({ message: `Invalid user data` });
     }
@@ -71,9 +81,10 @@ export const login = async (req, res) => {
         _id: user._id,
         username: user.username,
         email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        updatedAt: user.updatedAt,
+        createdAt: user.createdAt,
+        age: user.age,
+        gender: user.gender,
+        genderPreference: user.genderPreference,
       },
     });
   } catch (error) {
