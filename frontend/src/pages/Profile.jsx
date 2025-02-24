@@ -16,7 +16,12 @@ const Profile = () => {
               <img src="/swipify-icon.png" />
               <div className="rounded-full border-2 border-white bg-[#E94057] absolute bottom-0 right-0 p-1 text-white translate-x-1/3 translate-y-1/3">
                 <input className="hidden" type="file" />
-                <Camera className="size-5 " />
+                <img
+                  width="20"
+                  height="20"
+                  src="https://img.icons8.com/android/24/FFFFFF/camera.png"
+                  alt="camera"
+                />
               </div>
             </div>
           </div>
@@ -39,6 +44,16 @@ const Profile = () => {
                   />
                   <label className="absolute top-0 left-0 -translate-y-2.5 translate-x-3 text-[#a2a2a2] bg-white text-xs">
                     Last name
+                  </label>
+                </div>
+                <div className="w-full relative">
+                  <textarea
+                    className="border border-[#eeeeee] w-full h-20 rounded-md placeholder:text-black p-2 no-scrollbar"
+                    maxLength="100"
+                    placeholder="I am ..."
+                  />
+                  <label className="absolute top-0 left-0 -translate-y-2.5 translate-x-3 text-[#a2a2a2] bg-white text-xs">
+                    Bio
                   </label>
                 </div>
                 <div className="w-full relative">
