@@ -1,6 +1,14 @@
-import { Camera, CameraIcon, LucideCamera, X } from "lucide-react";
+import { Camera, CameraIcon, Loader, LucideCamera, X } from "lucide-react";
+import { useAuthStore } from "../store/useAuthStore";
 
 const Profile = () => {
+  const { isLoggingout, logout } = useAuthStore();
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    logout();
+  };
+
   return (
     <div className="h-screen flex justify-center items-center">
       <div className="bg-white p-4 border border-[#eeeeee] rounded-md">
@@ -28,24 +36,27 @@ const Profile = () => {
           <div className="h-full flex flex-col justify-center items-center space-y-4">
             <form className="w-xs md:w-md h-full">
               <div className="h-full space-y-5 flex flex-col justify-center items-center">
-                <div className="w-full relative">
-                  <input
-                    className="border border-[#eeeeee] w-full h-12 rounded-md placeholder:text-black pl-3"
-                    placeholder="Bharath"
-                  />
-                  <label className="absolute top-0 left-0 -translate-y-2.5 translate-x-3 text-[#a2a2a2] bg-white text-xs">
-                    First name
-                  </label>
+                <div className="w-full flex space-x-2">
+                  <div className="w-full relative">
+                    <input
+                      className="border border-[#eeeeee] w-full h-12 rounded-md placeholder:text-black pl-3"
+                      placeholder="Bharath"
+                    />
+                    <label className="absolute top-0 left-0 -translate-y-2.5 translate-x-3 text-[#a2a2a2] bg-white text-xs">
+                      First name
+                    </label>
+                  </div>
+                  <div className="w-full relative">
+                    <input
+                      className="border border-[#eeeeee] w-full h-12 rounded-md placeholder:text-black pl-3"
+                      placeholder="Seshadri"
+                    />
+                    <label className="absolute top-0 left-0 -translate-y-2.5 translate-x-3 text-[#a2a2a2] bg-white text-xs">
+                      Last name
+                    </label>
+                  </div>
                 </div>
-                <div className="w-full relative">
-                  <input
-                    className="border border-[#eeeeee] w-full h-12 rounded-md placeholder:text-black pl-3"
-                    placeholder="Seshadri"
-                  />
-                  <label className="absolute top-0 left-0 -translate-y-2.5 translate-x-3 text-[#a2a2a2] bg-white text-xs">
-                    Last name
-                  </label>
-                </div>
+
                 <div className="w-full relative">
                   <textarea
                     className="border border-[#eeeeee] w-full h-20 rounded-md placeholder:text-black p-2 no-scrollbar"
@@ -100,6 +111,20 @@ const Profile = () => {
                 <div className="w-full space-y-1">
                   <button className="bg-[#E94057] text-white p-3 rounded-md w-full">
                     Update Profile
+                  </button>
+                </div>
+                <div className="w-full space-y-1">
+                  <button
+                    className="bg-white text-black border border-[#eeeeee] p-3 rounded-md w-full hover:cursor-pointer"
+                    onClick={handleLogout}
+                  >
+                    {isLoggingout ? (
+                      <div className="flex justify-center items-center">
+                        <Loader className="size-5 animate-spin" />
+                      </div>
+                    ) : (
+                      "Logout"
+                    )}
                   </button>
                 </div>
               </div>

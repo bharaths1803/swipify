@@ -7,11 +7,11 @@ import {
 import { Heart, X } from "lucide-react";
 import { useState } from "react";
 
-const Swipe = () => {
+const Swipe = ({ open }) => {
   const [cards, setCards] = useState(cardData);
 
   return (
-    <div className="w-full flex justify-center items-center relative">
+    <div className={`w-full flex justify-center items-center relative`}>
       {cards.map((card, idx) => {
         return (
           <div className="absolute space-y-6">
@@ -25,19 +25,19 @@ const Swipe = () => {
             <div className="flex space-x-4 ml-3">
               <div
                 className="size-20 rounded-full flex justify-center items-center transform transition duration-500 
-                                hover:scale-125 font-bold text-green-500 shadow-md shadow-gray-200 hover:filter hover:drop-shadow-2xl bg-white"
+                            hover:scale-125 font-bold text-green-500 shadow-md shadow-gray-200 hover:filter hover:drop-shadow-2xl bg-white"
               >
                 <X className="size-10" />
               </div>
               <div
                 className="size-20 rounded-full flex justify-center items-center transform transition duration-500 
-                                hover:scale-125 font-bold text-[#E94057] shadow-md shadow-gray-200 hover:filter hover:drop-shadow-2xl bg-white"
+                            hover:scale-125 font-bold text-[#E94057] shadow-md shadow-gray-200 hover:filter hover:drop-shadow-2xl bg-white"
               >
                 <img src="/heart.png" width={35} height={35} />
               </div>
               <div
                 className="size-20 rounded-full flex justify-center items-center transform transition duration-500 
-                                hover:scale-125 font-bold text-green-500 shadow-md shadow-gray-200 hover:filter hover:drop-shadow-2xl bg-white"
+                            hover:scale-125 font-bold text-green-500 shadow-md shadow-gray-200 hover:filter hover:drop-shadow-2xl bg-white"
               >
                 <img src="/star-rating.png" width={53} height={53} />
               </div>
@@ -84,7 +84,7 @@ const Card = ({ cards, setCards, id, url }) => {
 
   return (
     <motion.button
-      className="space-y-3 shadow-sm shadow-gray-200 origin-bottom rounded-lg border border-gray-200"
+      className="space-y-3 shadow-sm shadow-gray-200 origin-bottom rounded-lg border border-gray-200 bg-white"
       drag="x"
       dragConstraints={{
         left: 0,
