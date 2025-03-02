@@ -32,7 +32,10 @@ const Home = () => {
       >
         <div className="w-full h-16 bg-pink-400 flex justify-between">
           <div className="h-14 ml-2 flex space-x-3 justify-center items-center">
-            <button onClick={handleOpenSidebar}>
+            <button
+              onClick={handleOpenSidebar}
+              className="hover:scale-125 ease-in-out duration-300"
+            >
               <img src="/swipify-icon.png" className="size-12" />
             </button>
             <div className="text-white font-bold text-xl">Swipify</div>
