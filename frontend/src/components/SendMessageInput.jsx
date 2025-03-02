@@ -1,6 +1,5 @@
 import { SendHorizonal, Smile } from "lucide-react";
-import { useChatStore } from "../store/useChatStore";
-import { useAuthStore } from "../store/useAuthStore";
+import { useMatchStore } from "../store/useMatchStore";
 import { useEffect, useRef, useState } from "react";
 import EmojiPicker from "emoji-picker-react";
 
@@ -10,8 +9,8 @@ const SendMessageInput = () => {
     sendMessage,
     subscribeToMessages,
     unsubscribeFromMessages,
-  } = useChatStore();
-  const { authUser } = useAuthStore();
+  } = useMatchStore();
+  const { authUser } = useMatchStore();
   const [text, setText] = useState("");
   const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
   const emojiPickerRef = useRef();

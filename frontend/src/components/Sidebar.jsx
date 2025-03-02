@@ -1,9 +1,7 @@
 import { Search, X } from "lucide-react";
 import React, { useEffect } from "react";
-import { useUserStore } from "../store/useUserStore";
-import { useChatStore } from "../store/useChatStore";
 import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "../store/useAuthStore";
+import { useMatchStore } from "../store/useMatchStore";
 
 const Sidebar = ({ onClose, open }) => {
   //Active bg color for sidebar user #eaeaea
@@ -16,9 +14,9 @@ const Sidebar = ({ onClose, open }) => {
     getSearchedUsers,
     getMatchedUsers,
     setSelectedUser,
-  } = useChatStore();
+  } = useMatchStore();
 
-  const { onlineUsers } = useAuthStore();
+  const { onlineUsers } = useMatchStore();
 
   useEffect(() => {
     getMatchedUsers();

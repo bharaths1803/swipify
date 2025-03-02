@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Swipe from "../components/Swipe";
-import { useAuthStore } from "../store/useAuthStore";
+import { useMatchStore } from "../store/useMatchStore";
 import { useNavigate } from "react-router-dom";
-import { useChatStore } from "../store/useChatStore";
 
 const Home = () => {
-  const { authUser } = useAuthStore();
+  const { authUser } = useMatchStore();
   const navigate = useNavigate();
 
   const [sidebarOpen, setSidebarOpen] = useState(true);

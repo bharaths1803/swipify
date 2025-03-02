@@ -1,10 +1,9 @@
 import { X } from "lucide-react";
-import { useChatStore } from "../store/useChatStore";
 import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "../store/useAuthStore";
+import { useMatchStore } from "../store/useMatchStore";
 const ChatHeader = () => {
-  const { selectedUser } = useChatStore();
-  const { onlineUsers } = useAuthStore();
+  const { selectedUser } = useMatchStore();
+  const { onlineUsers } = useMatchStore();
   const navigate = useNavigate();
   const isOnline = onlineUsers.includes(selectedUser._id);
 

@@ -1,12 +1,12 @@
 import { Camera, CameraIcon, Loader, LucideCamera, X } from "lucide-react";
-import { useAuthStore } from "../store/useAuthStore";
+import { useMatchStore } from "../store/useMatchStore";
 import { useNavigate } from "react-router-dom";
 import { useProfileStore } from "../store/useProfileStore";
 import { useRef, useState } from "react";
 
 const Profile = () => {
-  const { isLoggingout, logout } = useAuthStore();
-  const { authUser } = useAuthStore();
+  const { isLoggingout, logout } = useMatchStore();
+  const { authUser } = useMatchStore();
   const { isUpdatingProfile, updateProfile } = useProfileStore();
   const navigate = useNavigate();
   const imageUploadInputBoxRef = useRef();

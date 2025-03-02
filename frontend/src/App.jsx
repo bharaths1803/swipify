@@ -4,13 +4,13 @@ import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Signup from "./pages/Signup";
 import Home from "./pages/Home";
-import { useAuthStore } from "./store/useAuthStore";
+import { useMatchStore } from "./store/useMatchStore";
 import { Loader } from "lucide-react";
 import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 
 function App() {
-  const { checkAuth, authUser, isCheckingAuth } = useAuthStore();
+  const { checkAuth, authUser, isCheckingAuth } = useMatchStore();
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);

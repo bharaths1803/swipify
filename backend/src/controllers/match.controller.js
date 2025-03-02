@@ -30,7 +30,7 @@ export const getMatchedUsers = async (req, res) => {
     const loggedinUserId = req.user._id;
     const loggedinUser = await User.findById(loggedinUserId).populate(
       "matchedUsers",
-      "username profilePicUrl bio age"
+      "firstName lastName profilePicUrl bio age"
     );
     res.status(201).json({ matchedUsers: loggedinUser.matchedUsers });
   } catch (error) {

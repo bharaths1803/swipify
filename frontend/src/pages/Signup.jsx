@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { useAuthStore } from "../store/useAuthStore";
+import { useMatchStore } from "../store/useMatchStore";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Loader } from "lucide-react";
 
 const Signup = () => {
-  const { signup, isSigningup } = useAuthStore();
+  const { signup, isSigningup } = useMatchStore();
 
   const [showPassword, setShowPassword] = useState(false);
 

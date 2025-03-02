@@ -1,7 +1,6 @@
-import { CheckCheck, CheckCheckIcon, Heart } from "lucide-react";
-import { useChatStore } from "../store/useChatStore";
+import { CheckCheckIcon } from "lucide-react";
+import { useMatchStore } from "../store/useMatchStore";
 import { useEffect, useRef } from "react";
-import { useAuthStore } from "../store/useAuthStore";
 
 const ChatBody = () => {
   const {
@@ -10,8 +9,8 @@ const ChatBody = () => {
     getMessages,
     subscribeToMessages,
     unsubscribeFromMessages,
-  } = useChatStore();
-  const { authUser } = useAuthStore();
+  } = useMatchStore();
+  const { authUser } = useMatchStore();
 
   const lastMessageRef = useRef();
 
