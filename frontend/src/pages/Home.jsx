@@ -45,7 +45,7 @@ const Home = () => {
             >
               <img
                 src={authUser?.profilePicUrl || "/swipify-icon.png"}
-                className="size-10 rounded-full object-contain"
+                className="size-10 rounded-full"
               />
             </button>
             <div className="text-white font-semibold">{`${authUser?.firstName} ${authUser?.lastName}`}</div>

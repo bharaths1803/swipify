@@ -88,7 +88,7 @@ const Login = () => {
               </div>
               <div className="w-full space-y-1">
                 <button
-                  className="bg-[#E94057] text-white p-3 rounded-md w-full hover:bg-red-400 hover:cursor-pointer"
+                  className="bg-[#E94057] text-white p-3 rounded-md w-full hover:bg-red-400 active:bg-red-300 hover:cursor-pointer"
                   onClick={handleLogin}
                 >
                   {isLoggingin ? (

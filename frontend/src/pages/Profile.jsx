@@ -85,7 +85,7 @@ const Profile = () => {
           <div className="flex justify-between">
             <h1 className="font-bold text-3xl text-center w-full">PROFILE</h1>
             <button
-              className="flex justify-center items-center border p-2 rounded-lg border-[#eeeeee] hover:cursor-pointer"
+              className="flex justify-center items-center border p-2 rounded-lg border-[#eeeeee] hover:cursor-pointer hover:bg-[#f4f4f4] active:bg-[#d6d6d6]"
               onClick={handleCloseProfile}
             >
               <X className="size-5" />
@@ -99,7 +99,7 @@ const Profile = () => {
                   authUser?.profilePicUrl ||
                   "/swipify-icon.png"
                 }
-                className="object-contain"
+                className="size-full"
               />
               <button
                 className="rounded-full border-2 border-white bg-[#E94057] absolute bottom-0 right-0 p-1 text-white translate-x-1/3 translate-y-1/3 hover:scale-125 transform transition duration-500 hover:cursor-pointer"
@@ -258,7 +258,7 @@ const Profile = () => {
                 </div>
                 <div className="w-full">
                   <button
-                    className="bg-[#E94057] text-white p-3 rounded-md w-full hover:bg-red-400 hover:cursor-pointer"
+                    className="bg-[#E94057] text-white p-3 rounded-md w-full hover:bg-red-400 active:bg-red-300 hover:cursor-pointer"
                     onClick={handleUpdateProfile}
                   >
                     {isUpdatingProfile ? (
@@ -272,7 +272,7 @@ const Profile = () => {
                 </div>
                 <div className="w-full">
                   <button
-                    className="bg-white text-black border border-[#eeeeee] p-3 rounded-md w-full hover:cursor-pointer"
+                    className="bg-white text-black border border-[#eeeeee] p-3 rounded-md w-full hover:cursor-pointer hover:bg-[#f4f4f4] active:bg-[#d6d6d6]"
                     onClick={handleLogout}
                   >
                     {isLoggingout ? (
