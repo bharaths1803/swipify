@@ -70,7 +70,7 @@ export const swipeRight = async (req, res) => {
     const loggedInUser = await User.findById(loggedinUserId);
     if (!loggedInUser.likedUsers.includes(toLikeUserId)) {
       loggedInUser.likedUsers.push(toLikeUserId);
-      if (toLikeUserId.likedUsers.includes(loggedinUserId)) {
+      if (toLikeUser.likedUsers.includes(loggedinUserId)) {
         toLikeUser.matchedUsers.push(loggedinUserId);
         loggedInUser.matchedUsers.push(toLikeUser);
         const loggedInUserSocketId = getUserSocketId(loggedinUserId);

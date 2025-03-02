@@ -4,13 +4,14 @@ import {
   useMotionValueEvent,
   useTransform,
 } from "framer-motion";
-import { Heart, X } from "lucide-react";
+import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useUserStore } from "../store/useUserStore";
-import { useAuthStore } from "../store/useAuthStore";
+import { useMatchStore } from "../store/useMatchStore";
 
 const Swipe = ({ open }) => {
   const { users, isGettingUsers, getUsers } = useUserStore();
+
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
@@ -27,17 +28,9 @@ const Swipe = ({ open }) => {
     <div className={`w-full flex justify-center items-center relative`}>
       {cards.map((user, idx) => {
         return (
-          <div className="absolute space-y-6">
-            <Card
-              key={user._id}
-              id={user._id}
-              url={user.profilePicUrl}
-              firstName={user.firstName}
-              lastName={user.lastName}
-              age={user.age}
-              setCards={setCards}
-            />
-            <div className="flex space-x-4 ml-3">
+          <div className="absolute space-y-1">
+            <Card key={user._id} setCards={setCards} user={user} />
+            {/*            <div className="flex space-x-4 ml-3">
               <div
                 className="size-20 rounded-full flex justify-center items-center transform transition duration-500 
                             hover:scale-125 font-bold text-green-500 shadow-md shadow-gray-200 hover:filter hover:drop-shadow-2xl bg-white"
@@ -56,7 +49,7 @@ const Swipe = ({ open }) => {
               >
                 <img src="/star-rating.png" width={53} height={53} />
               </div>
-            </div>
+            </div>*/}
           </div>
         );
       })}
@@ -64,7 +57,9 @@ const Swipe = ({ open }) => {
   );
 };
 
-const Card = ({ id, url, firstName, lastName, age, setCards }) => {
+const Card = ({ setCards, user }) => {
+  const { swipeLeft, swipeRight } = useMatchStore();
+
   const [draggingRight, setDraggingRight] = useState(false);
   const [draggingLeft, setDraggingLeft] = useState(false);
 
@@ -83,7 +78,12 @@ const Card = ({ id, url, firstName, lastName, age, setCards }) => {
 
   const handleDragEnd = () => {
     if (Math.abs(x.get()) > 50) {
-      setCards((prevCards) => prevCards.filter((ele) => ele._id !== id));
+      setCards((prevCards) => prevCards.filter((ele) => ele._id !== user._id));
+      if (x.get() > 50) {
+        swipeRight(user._id);
+      } else {
+        swipeLeft(user._id);
+      }
     }
   };
 
@@ -99,7 +99,7 @@ const Card = ({ id, url, firstName, lastName, age, setCards }) => {
 
   return (
     <motion.button
-      className="space-y-3 shadow-sm shadow-gray-200 origin-bottom rounded-lg border border-gray-200 bg-white"
+      className="shadow-sm shadow-gray-200 origin-bottom rounded-lg border border-gray-200 bg-white"
       drag="x"
       dragConstraints={{
         left: 0,
@@ -116,11 +116,17 @@ const Card = ({ id, url, firstName, lastName, age, setCards }) => {
             {draggingRight && <img src="/heart.png" width={35} height={35} />}
           </div>
         )}
-        <img src={url} className="h-96 w-72 object-cover pointer-events-none" />
+        <img
+          src={user.profilePicUrl}
+          className="h-96 w-72 object-cover pointer-events-none"
+        />
       </div>
-      <div className="font-semibold text-2xl pl-4 pb-3 text-left">
-        {firstName} {lastName}
-        {","} {age}
+      <div className="font-semibold text-lg pl-3 text-left mt-3">
+        {user.firstName} {user.lastName}
+        {","} {user.age}
+      </div>
+      <div className="px-4 pb-3 text-left max-w-72 h-16 overflow-y-auto no-scrollbar text-sm mt-0.5">
+        {user.bio}
       </div>
     </motion.button>
   );

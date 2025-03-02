@@ -4,7 +4,6 @@ import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Signup from "./pages/Signup";
 import Home from "./pages/Home";
-import ViewProfile from "./pages/ViewProfile";
 import { useAuthStore } from "./store/useAuthStore";
 import { Loader } from "lucide-react";
 import { useEffect } from "react";
@@ -42,10 +41,6 @@ function App() {
         <Route
           path="/profile"
           element={authUser ? <Profile /> : <Navigate to={"/login"} />}
-        />
-        <Route
-          path="/view-profile"
-          element={authUser ? <ViewProfile /> : <Navigate to={"/login"} />}
         />
         <Route
           path="/chat"

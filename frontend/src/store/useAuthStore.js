@@ -84,6 +84,9 @@ export const useAuthStore = create((set, get) => ({
       socket.on("onlineusers", (onlineUsers) => {
         set({ onlineUsers });
       });
+      socket.on("match-found", (matchFoundMessage) => {
+        toast.success(matchFoundMessage);
+      });
     } catch (error) {
       console.log(`Error connecting to socket ${error}`);
     }
