@@ -46,7 +46,7 @@ const Home = () => {
               onClick={handleNavigateToProfilePage}
             >
               <img
-                src={authUser?.profilePicUrl || "/swipify-icon.png"}
+                src={authUser?.profilePicUrl}
                 className="size-10 rounded-full"
               />
             </button>
