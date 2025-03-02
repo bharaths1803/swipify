@@ -6,12 +6,25 @@ export const getMessages = async (req, res) => {
   try {
     const { toChatUserId } = req.params;
     const currentUserId = req.user._id;
-    const messages = await Message.find({
+    let messages = await Message.find({
       $or: [
         { senderId: currentUserId, receiverId: toChatUserId },
         { senderId: toChatUserId, receiverId: currentUserId },
       ],
     });
+    await Message.updateMany(
+      { senderId: toChatUserId, receiverId: currentUserId, seen: false },
+      { $set: { seen: true } }
+    );
+    messages = messages.map((message) => ({
+      ...message.toObject(),
+      seen: message.senderId === toChatUserId ? true : message.seen,
+    }));
+
+    const receiverSocketId = getUserSocketId(toChatUserId);
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("seen", messages);
+    }
     res.status(201).json({ messages });
   } catch (error) {
     console.log(`Error in get messages controller`);
@@ -22,24 +35,20 @@ export const getMessages = async (req, res) => {
 export const sendMessage = async (req, res) => {
   try {
     const { receiverId } = req.params;
-    const { text, image } = req.body;
-    let imageUrl;
-    if (image) {
-      const result = await cloudinary.uploader.upload(image);
-      imageUrl = result.secure_url;
-    }
+    const { text } = req.body;
     const senderId = req.user._id;
-    const message = await Message.create({
+    let message = new Message({
       senderId,
       receiverId,
       text,
-      imageUrl,
     });
-    await message.save();
     const receiverSocketId = getUserSocketId(receiverId);
     if (receiverSocketId) {
+      message._doc.seen = true;
+      await message.save();
       io.to(receiverSocketId).emit("newMessage", message);
     }
+    await message.save();
     res.status(200).json({ message });
   } catch (error) {
     console.log(`Error in send messages controller`);

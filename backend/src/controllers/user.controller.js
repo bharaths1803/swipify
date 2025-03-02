@@ -28,20 +28,22 @@ export const getUsers = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
   try {
-    const { profileData } = req.body;
+    const updateData = req.body;
     const loggedinUserId = req.user._id;
-    const profilePic = profileData.profilePic;
+    const profilePic = updateData.profilePic;
     let profilePicUrl;
     if (profilePic) {
       const result = await cloudinary.uploader.upload(profilePic);
       profilePicUrl = result.secure_url;
     }
-    const { username, age, gender, genderPreference, bio } = profileData;
+    const { firstName, lastName, age, gender, genderPreference, bio } =
+      updateData;
     const updatedUser = await User.findByIdAndUpdate(
       loggedinUserId,
       {
         profilePicUrl,
-        username,
+        firstName,
+        lastName,
         age,
         gender,
         genderPreference,

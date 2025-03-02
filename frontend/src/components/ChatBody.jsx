@@ -1,183 +1,122 @@
-import { CheckCheck, CheckCheckIcon } from "lucide-react";
+import { CheckCheck, CheckCheckIcon, Heart } from "lucide-react";
+import { useChatStore } from "../store/useChatStore";
+import { useEffect, useRef } from "react";
+import { useAuthStore } from "../store/useAuthStore";
 
 const ChatBody = () => {
+  const {
+    messages,
+    isMessagesLoading,
+    getMessages,
+    subscribeToMessages,
+    unsubscribeFromMessages,
+  } = useChatStore();
+  const { authUser } = useAuthStore();
+
+  const lastMessageRef = useRef();
+
+  useEffect(() => {
+    getMessages();
+  }, []);
+
+  useEffect(() => {
+    subscribeToMessages();
+    return () => unsubscribeFromMessages();
+  }, [subscribeToMessages, unsubscribeFromMessages]);
+
+  useEffect(() => {
+    if (messages && lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView({ behaviour: "smooth" });
+    }
+  }, [messages]);
+
+  const formatTo12HourTime = (timestamp) => {
+    const date = new Date(timestamp);
+    const options = {
+      timeZone: "Asia/Kolkata",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    };
+    return new Intl.DateTimeFormat("en-US", options).format(date);
+  };
+
   return (
     <div className="flex flex-col grow overflow-y-auto space-y-4 px-6 no-scrollbar h-screen">
-      <div className="w-full">
-        <div className="w-full flex justify-start">
-          <div className="p-4 bg-[#fdf1f3] rounded-xl rounded-bl-none">
-            It is a long established fact that a reader will be distracted by
-            the readable content of a page when looking at its layout. The point
-            of using Lorem Ipsum is that it has a more-or-less normal
-            distribution of letters, as opposed to using 'Content here, content
-            here', making it look like readable English. Many desktop publishing
-            packages and web page editors now use Lorem Ipsum as their default
-            model text, and a search for 'lorem ipsum' will uncover many web
-            sites still in their infancy. Various versions have evolved over the
-            years, sometimes by accident, sometimes on purpose (injected humour
-            and the like).
+      {isMessagesLoading &&
+        [1, 2, 3, 4, 5, 6].map((val, idx) => {
+          const isSender = val % 2 == 1;
+          return (
+            <div className="w-full">
+              <div
+                className={`w-full flex ${
+                  isSender ? "justify-end" : "justify-start"
+                } `}
+              >
+                <div className="space-y-3">
+                  <div
+                    className={`h-10 w-sm bg-gray-400 rounded-xl ${
+                      isSender ? "rounded-br-none" : "rounded-bl-none"
+                    } animate-pulse`}
+                  />
+                  <div
+                    className={`w-full flex ${
+                      isSender ? "justify-end" : "justify-start"
+                    }`}
+                  >
+                    <div
+                      className={`h-10 w-1/2 bg-gray-400 rounded-xl ${
+                        isSender ? "rounded-br-none" : "rounded-bl-none"
+                      } animate-pulse`}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      {!isMessagesLoading &&
+        messages.length > 0 &&
+        messages.map((message, idx) => {
+          const isSender = message.senderId === authUser._id;
+          return (
+            <div className="w-full" ref={lastMessageRef}>
+              <div
+                className={`w-full flex ${
+                  isSender ? "justify-end" : "justify-start"
+                } `}
+              >
+                <div
+                  className={`p-4 bg-[#fdf1f3] rounded-xl ${
+                    isSender ? "rounded-br-none" : "rounded-bl-none"
+                  }`}
+                >
+                  {message.text}
+                </div>
+              </div>
+              <div
+                className={`w-full flex ${
+                  isSender ? "justify-end" : "justify-start"
+                } items-center space-x-0.5`}
+              >
+                <p className="text-[#999999]">
+                  {formatTo12HourTime(message.createdAt)}
+                </p>
+                {isSender && message.seen && (
+                  <CheckCheckIcon className="size-4" />
+                )}
+              </div>
+            </div>
+          );
+        })}
+
+      {!isMessagesLoading && messages.length === 0 && (
+        <div className="flex justify-center items-center h-full w-full">
+          <div className="animate-ping">
+            <img src="/heart.png" width={50} height={50} />
           </div>
         </div>
-        <div className="w-full flex justify-start items-center">
-          <p className="text-[#999999]">3:03 PM</p>
-        </div>
-      </div>
-      <div className="w-full">
-        <div className="w-full  flex justify-end">
-          <div className="p-4 bg-[#fdf1f3] rounded-xl rounded-br-none">
-            It is a long established fact that a reader will be distracted by
-            the readable content of a page when looking at its layout. The point
-            of using Lorem Ipsum is that it has a more-or-less normal
-            distribution of letters, as opposed to using 'Content here, content
-            here', making it look like readable English. Many desktop publishing
-            packages and web page editors now use Lorem Ipsum as their default
-            model text, and a search for 'lorem ipsum' will uncover many web
-            sites still in their infancy. Various versions have evolved over the
-            years, sometimes by accident, sometimes on purpose (injected humour
-            and the like).
-          </div>
-        </div>
-        <div className="w-full flex justify-end items-center space-x-0.5">
-          <p className="text-[#999999]">3:03 PM</p>
-          <CheckCheckIcon className="size-4" />
-        </div>
-      </div>
-      <div className="w-full">
-        <div className="w-full flex justify-start">
-          <div className="p-4 bg-[#fdf1f3] rounded-xl rounded-br-none">
-            It is a long established fact that a reader will be distracted by
-            the readable content of a page when looking at its layout. The point
-            of using Lorem Ipsum is that it has a more-or-less normal
-            distribution of letters, as opposed to using 'Content here, content
-            here', making it look like readable English. Many desktop publishing
-            packages and web page editors now use Lorem Ipsum as their default
-            model text, and a search for 'lorem ipsum' will uncover many web
-            sites still in their infancy. Various versions have evolved over the
-            years, sometimes by accident, sometimes on purpose (injected humour
-            and the like).
-          </div>
-        </div>
-        <div className="w-full flex justify-start items-center">
-          <p className="text-[#999999]">3:03 PM</p>
-        </div>
-      </div>{" "}
-      <div className="w-full">
-        <div className="w-full  flex justify-end">
-          <div className="p-4 bg-[#fdf1f3] rounded-xl rounded-br-none">
-            It is a long established fact that a reader will be distracted by
-            the readable content of a page when looking at its layout. The point
-            of using Lorem Ipsum is that it has a more-or-less normal
-            distribution of letters, as opposed to using 'Content here, content
-            here', making it look like readable English. Many desktop publishing
-            packages and web page editors now use Lorem Ipsum as their default
-            model text, and a search for 'lorem ipsum' will uncover many web
-            sites still in their infancy. Various versions have evolved over the
-            years, sometimes by accident, sometimes on purpose (injected humour
-            and the like).
-          </div>
-        </div>
-        <div className="w-full flex justify-end items-center space-x-0.5">
-          <p className="text-[#999999]">3:03 PM</p>
-          <CheckCheckIcon className="size-4" />
-        </div>
-      </div>
-      <div className="w-full">
-        <div className="w-full flex justify-start">
-          <div className="p-4 bg-[#fdf1f3] rounded-xl rounded-br-none">
-            It is a long established fact that a reader will be distracted by
-            the readable content of a page when looking at its layout. The point
-            of using Lorem Ipsum is that it has a more-or-less normal
-            distribution of letters, as opposed to using 'Content here, content
-            here', making it look like readable English. Many desktop publishing
-            packages and web page editors now use Lorem Ipsum as their default
-            model text, and a search for 'lorem ipsum' will uncover many web
-            sites still in their infancy. Various versions have evolved over the
-            years, sometimes by accident, sometimes on purpose (injected humour
-            and the like).
-          </div>
-        </div>
-        <div className="w-full flex justify-start items-center">
-          <p className="text-[#999999]">3:03 PM</p>
-        </div>
-      </div>{" "}
-      <div className="w-full">
-        <div className="w-full  flex justify-end">
-          <div className="p-4 bg-[#fdf1f3] rounded-xl rounded-br-none">
-            It is a long established fact that a reader will be distracted by
-            the readable content of a page when looking at its layout. The point
-            of using Lorem Ipsum is that it has a more-or-less normal
-            distribution of letters, as opposed to using 'Content here, content
-            here', making it look like readable English. Many desktop publishing
-            packages and web page editors now use Lorem Ipsum as their default
-            model text, and a search for 'lorem ipsum' will uncover many web
-            sites still in their infancy. Various versions have evolved over the
-            years, sometimes by accident, sometimes on purpose (injected humour
-            and the like).
-          </div>
-        </div>
-        <div className="w-full flex justify-end items-center space-x-0.5">
-          <p className="text-[#999999]">3:03 PM</p>
-          <CheckCheckIcon className="size-4" />
-        </div>
-      </div>
-      <div className="w-full">
-        <div className="w-full flex justify-start">
-          <div className="p-4 bg-[#fdf1f3] rounded-xl rounded-br-none">
-            It is a long established fact that a reader will be distracted by
-            the readable content of a page when looking at its layout. The point
-            of using Lorem Ipsum is that it has a more-or-less normal
-            distribution of letters, as opposed to using 'Content here, content
-            here', making it look like readable English. Many desktop publishing
-            packages and web page editors now use Lorem Ipsum as their default
-            model text, and a search for 'lorem ipsum' will uncover many web
-            sites still in their infancy. Various versions have evolved over the
-            years, sometimes by accident, sometimes on purpose (injected humour
-            and the like).
-          </div>
-        </div>
-        <div className="w-full flex justify-start items-center">
-          <p className="text-[#999999]">3:03 PM</p>
-        </div>
-      </div>{" "}
-      <div className="w-full">
-        <div className="w-full  flex justify-end">
-          <div className="p-4 bg-[#fdf1f3] rounded-xl rounded-br-none">
-            It is a long established fact that a reader will be distracted by
-            the readable content of a page when looking at its layout. The point
-            of using Lorem Ipsum is that it has a more-or-less normal
-            distribution of letters, as opposed to using 'Content here, content
-            here', making it look like readable English. Many desktop publishing
-            packages and web page editors now use Lorem Ipsum as their default
-            model text, and a search for 'lorem ipsum' will uncover many web
-            sites still in their infancy. Various versions have evolved over the
-            years, sometimes by accident, sometimes on purpose (injected humour
-            and the like).
-          </div>
-        </div>
-        <div className="w-full flex justify-end items-center space-x-0.5">
-          <p className="text-[#999999]">3:03 PM</p>
-          <CheckCheckIcon className="size-4" />
-        </div>
-      </div>
-      <div className="w-full">
-        <div className="w-full flex justify-start">
-          <div className="p-4 bg-[#fdf1f3] rounded-xl rounded-br-none">
-            It is a long established fact that a reader will be distracted by
-            the readable content of a page when looking at its layout. The point
-            of using Lorem Ipsum is that it has a more-or-less normal
-            distribution of letters, as opposed to using 'Content here, content
-            here', making it look like readable English. Many desktop publishing
-            packages and web page editors now use Lorem Ipsum as their default
-            model text, and a search for 'lorem ipsum' will uncover many web
-            sites still in their infancy. Various versions have evolved over the
-            years, sometimes by accident, sometimes on purpose (injected humour
-            and the like).
-          </div>
-        </div>
-        <div className="w-full flex justify-start items-center">
-          <p className="text-[#999999]">3:03 PM</p>
-        </div>
-      </div>
+      )}
     </div>
   );
 };

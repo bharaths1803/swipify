@@ -19,24 +19,14 @@ export function getUserSocketId(userId) {
 
 io.on("connection", (socket) => {
   const { userId } = socket.handshake.query;
-  if (userId) userSocketMap[userId] = socket.id;
+  if (userId) {
+    userSocketMap[userId] = socket.id;
+    io.emit("onlineusers", Object.keys(userSocketMap));
+  }
 
   socket.on("disconnect", () => {
     delete userSocketMap[userId];
-  });
-
-  socket.on("typing", (receiverId) => {
-    const receiverSocketId = getUserSocketId(receiverId);
-    if (receiverSocketId) {
-      io.to(receiverSocketId).emit("typing", userId);
-    }
-  });
-
-  socket.on("stop-typing", (receiverId) => {
-    const receiverSocketId = getUserSocketId(receiverId);
-    if (receiverSocketId) {
-      io.to(receiverSocketId).emit("stop-typing", userId);
-    }
+    io.emit("onlineusers", Object.keys(userSocketMap));
   });
 });
 

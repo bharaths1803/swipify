@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Swipe from "../components/Swipe";
 import { useAuthStore } from "../store/useAuthStore";
 import { useNavigate } from "react-router-dom";
+import { useChatStore } from "../store/useChatStore";
 
 const Home = () => {
   const { authUser } = useAuthStore();
@@ -28,7 +29,7 @@ const Home = () => {
       <div
         className={`w-full flex flex-col bg-cyan-100 ${
           sidebarOpen ? "hidden md:block" : "block"
-        }`}
+        } overflow-hidden`}
       >
         <div className="w-full h-16 bg-pink-400 flex justify-between">
           <div className="h-14 ml-2 flex space-x-3 justify-center items-center">
@@ -42,7 +43,10 @@ const Home = () => {
               className="size-12 ml-2 flex justify-center items-center rounded-full border-4 border-white hover:scale-125 transform transition duration-500 hover:cursor-pointer"
               onClick={handleNavigateToProfilePage}
             >
-              <img src="/swipify-icon.png" />
+              <img
+                src={authUser?.profilePicUrl || "/swipify-icon.png"}
+                className="size-10 rounded-full object-contain"
+              />
             </button>
             <div className="text-white font-semibold">{`${authUser?.firstName} ${authUser?.lastName}`}</div>
           </div>

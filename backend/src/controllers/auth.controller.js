@@ -4,10 +4,18 @@ import { generateToken } from "../lib/utils.js";
 
 export const signup = async (req, res) => {
   try {
-    const { username, email, password, age, gender, genderPreference } =
-      req.body;
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      age,
+      gender,
+      genderPreference,
+    } = req.body;
     if (
-      !username ||
+      !firstName ||
+      !lastName ||
       !email ||
       !password ||
       !age ||
@@ -21,21 +29,20 @@ export const signup = async (req, res) => {
         .status(400)
         .json({ message: `Password must contain at least 6 characters` });
     }
-    if (username.length > 16) {
+    if (firstName.length + lastName.length > 16) {
       return res
         .status(400)
         .json({ message: `User name must not exceed 16 characters` });
     }
-    const existingUser = await User.findOne({
-      $or: [{ email }, { username }],
-    });
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: `User already exists` });
     }
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
     const newUser = await User.create({
-      username,
+      firstName,
+      lastName,
       email,
       password: hashedPassword,
       age,
@@ -50,7 +57,8 @@ export const signup = async (req, res) => {
     res.status(201).json({
       user: {
         _id: newUser._id,
-        username: newUser.username,
+        firstName: newUser.firstName,
+        lastName: newUser.lastName,
         email: newUser.email,
         createdAt: newUser.createdAt,
         age: newUser.age,
@@ -79,7 +87,8 @@ export const login = async (req, res) => {
     res.status(200).json({
       user: {
         _id: user._id,
-        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
         email: user.email,
         createdAt: user.createdAt,
         age: user.age,

@@ -5,22 +5,37 @@ import {
   useTransform,
 } from "framer-motion";
 import { Heart, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useUserStore } from "../store/useUserStore";
+import { useAuthStore } from "../store/useAuthStore";
 
 const Swipe = ({ open }) => {
-  const [cards, setCards] = useState(cardData);
+  const { users, isGettingUsers, getUsers } = useUserStore();
+  const [cards, setCards] = useState([]);
+
+  useEffect(() => {
+    getUsers();
+  }, []);
+
+  useEffect(() => {
+    if (users.length > 0) {
+      setCards([...users]);
+    }
+  }, [users]);
 
   return (
     <div className={`w-full flex justify-center items-center relative`}>
-      {cards.map((card, idx) => {
+      {cards.map((user, idx) => {
         return (
           <div className="absolute space-y-6">
             <Card
-              key={card.id}
-              cards={cards}
+              key={user._id}
+              id={user._id}
+              url={user.profilePicUrl}
+              firstName={user.firstName}
+              lastName={user.lastName}
+              age={user.age}
               setCards={setCards}
-              id={card.id}
-              url={card.url}
             />
             <div className="flex space-x-4 ml-3">
               <div
@@ -49,7 +64,7 @@ const Swipe = ({ open }) => {
   );
 };
 
-const Card = ({ cards, setCards, id, url }) => {
+const Card = ({ id, url, firstName, lastName, age, setCards }) => {
   const [draggingRight, setDraggingRight] = useState(false);
   const [draggingLeft, setDraggingLeft] = useState(false);
 
@@ -68,7 +83,7 @@ const Card = ({ cards, setCards, id, url }) => {
 
   const handleDragEnd = () => {
     if (Math.abs(x.get()) > 50) {
-      setCards((prevCards) => prevCards.filter((ele) => ele.id !== id));
+      setCards((prevCards) => prevCards.filter((ele) => ele._id !== id));
     }
   };
 
@@ -104,45 +119,11 @@ const Card = ({ cards, setCards, id, url }) => {
         <img src={url} className="h-96 w-72 object-cover pointer-events-none" />
       </div>
       <div className="font-semibold text-2xl pl-4 pb-3 text-left">
-        Grace, 23
+        {firstName} {lastName}
+        {","} {age}
       </div>
     </motion.button>
   );
 };
-
-const cardData = [
-  {
-    id: 1,
-    url: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=2370&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    id: 2,
-    url: "https://images.unsplash.com/photo-1512374382149-233c42b6a83b?q=80&w=2235&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    id: 3,
-    url: "https://images.unsplash.com/photo-1539185441755-769473a23570?q=80&w=2342&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    id: 4,
-    url: "https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=2224&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    id: 5,
-    url: "https://images.unsplash.com/photo-1516478177764-9fe5bd7e9717?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    id: 6,
-    url: "https://images.unsplash.com/photo-1570464197285-9949814674a7?q=80&w=2273&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    id: 7,
-    url: "https://images.unsplash.com/photo-1578608712688-36b5be8823dc?q=80&w=2187&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    id: 8,
-    url: "https://images.unsplash.com/photo-1505784045224-1247b2b29cf3?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-];
 
 export default Swipe;
