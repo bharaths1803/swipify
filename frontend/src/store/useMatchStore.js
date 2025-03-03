@@ -70,7 +70,7 @@ export const useMatchStore = create((set, get) => ({
       toast.success(res.data.message);
       set({ authUser: null });
     } catch (error) {
-      console.log(error.response.data.message);
+      toast.error(error.response.data.message);
     } finally {
       set({ isLoggingout: false });
     }
