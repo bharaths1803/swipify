@@ -79,7 +79,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="h-screen flex justify-center items-center my-4">
+    <div className="h-screen flex justify-center items-center">
       <div className="bg-white p-4 border border-[#eeeeee] rounded-md">
         <div className="h-full space-y-4">
           <div className="flex justify-between">
