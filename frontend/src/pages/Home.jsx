@@ -5,7 +5,7 @@ import { useMatchStore } from "../store/useMatchStore";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-  const { authUser } = useMatchStore();
+  const { authUser, checkAuth } = useMatchStore();
   const navigate = useNavigate();
 
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -21,6 +21,10 @@ const Home = () => {
   const handleNavigateToProfilePage = () => {
     navigate("/profile");
   };
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
 
   return (
     <div className="h-screen flex">

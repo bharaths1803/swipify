@@ -2,14 +2,18 @@ import { Camera, CameraIcon, Loader, LucideCamera, X } from "lucide-react";
 import { useMatchStore } from "../store/useMatchStore";
 import { useNavigate } from "react-router-dom";
 import { useProfileStore } from "../store/useProfileStore";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Profile = () => {
   const { isLoggingout, logout } = useMatchStore();
-  const { authUser } = useMatchStore();
+  const { authUser, checkAuth } = useMatchStore();
   const { isUpdatingProfile, updateProfile } = useProfileStore();
   const navigate = useNavigate();
   const imageUploadInputBoxRef = useRef();
+
+  useEffect(() => {
+    checkAuth();
+  }, [updateProfile, checkAuth]);
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -23,7 +27,7 @@ const Profile = () => {
     gender: authUser?.gender,
     genderPreference: authUser?.genderPreference,
     profilePic: "",
-    bio: authUser?.bio,
+    bio: authUser.bio,
   });
 
   const isValidUpdateData = () => {
@@ -160,7 +164,6 @@ const Profile = () => {
                   <textarea
                     className="border border-[#eeeeee] w-full h-20 rounded-md placeholder:text-black p-2 no-scrollbar"
                     maxLength="100"
-                    placeholder="I am ..."
                     value={updateData.bio}
                     onChange={(e) =>
                       setUpdateData({ ...updateData, bio: e.target.value })

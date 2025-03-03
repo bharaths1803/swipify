@@ -13,7 +13,7 @@ export const useMatchStore = create((set, get) => ({
   messages: [],
   isMessagesLoading: false,
   authUser: null,
-  isCheckingAuth: true,
+  isCheckingAuth: false,
   isSigningup: false,
   isLoggingin: false,
   isLoggingout: false,
@@ -28,7 +28,6 @@ export const useMatchStore = create((set, get) => ({
       get().connectSocket();
       set({ authUser: res.data.user });
     } catch (error) {
-      ("");
       toast.error(error.response.data.message);
     } finally {
       set({ isCheckingAuth: false });
@@ -71,7 +70,7 @@ export const useMatchStore = create((set, get) => ({
       toast.success(res.data.message);
       set({ authUser: null });
     } catch (error) {
-      toast.error(error.response.data.message);
+      console.log(error.response.data.message);
     } finally {
       set({ isLoggingout: false });
     }

@@ -10,10 +10,7 @@ import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 
 function App() {
-  const { checkAuth, authUser, isCheckingAuth } = useMatchStore();
-  useEffect(() => {
-    checkAuth();
-  }, [checkAuth]);
+  const { authUser, isCheckingAuth } = useMatchStore();
 
   if (!authUser && isCheckingAuth) {
     return (
