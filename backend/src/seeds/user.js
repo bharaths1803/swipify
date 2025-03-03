@@ -246,6 +246,18 @@ let users = [
       "https://i.pinimg.com/736x/c3/3c/8e/c33c8eeb8d1b4727b5cfa3c99e9ba966.jpg",
     bio: "I’m Rukia Kuchiki, a Soul Reaper with a sharp blade and a sharper wit. Life’s a battle—let’s fight it together.",
   },
+  {
+    firstName: "Eren",
+    lastName: "Yeager",
+    email: "Eren@gmail.com",
+    password: "Eren@1",
+    age: 23,
+    gender: "male",
+    genderPreference: "female",
+    profilePicUrl:
+      "https://w0.peakpx.com/wallpaper/747/866/HD-wallpaper-eren-smiling-eren.jpg",
+    bio: "Freedom fighter | Traveller | Lover | Rumbler",
+  },
 ];
 
 const seedUsers = async () => {
@@ -285,5 +297,5 @@ const deleteTestUsers = async () => {
 };
 
 connectDB();
-//deleteTestUsers();
+deleteTestUsers();
 seedUsers();

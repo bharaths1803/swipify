@@ -79,77 +79,95 @@ const Profile = () => {
   };
 
   return (
-    <div className="h-screen flex justify-center items-center">
+    <div className="h-screen flex justify-center items-center my-4">
       <div className="bg-white p-4 border border-[#eeeeee] rounded-md">
         <div className="h-full space-y-4">
           <div className="flex justify-between">
-            <h1 className="font-bold text-3xl text-center w-full">PROFILE</h1>
+            <div className="w-full flex justify-center">
+              <div className="size-16 rounded-xl bg-[#dcdcdc] relative flex justify-enter items-center">
+                <img
+                  src={
+                    updateData?.profilePic ||
+                    authUser?.profilePicUrl ||
+                    "/swipify-icon.png"
+                  }
+                  className="size-full"
+                />
+                <button
+                  className="rounded-full border-2 border-white bg-[#E94057] absolute bottom-0 right-0 p-1 text-white translate-x-1/3 translate-y-1/3 hover:scale-125 transform transition duration-500 hover:cursor-pointer"
+                  onClick={handleImageUpload}
+                >
+                  <input
+                    className="hidden"
+                    type="file"
+                    onChange={loadImage}
+                    ref={imageUploadInputBoxRef}
+                  />
+                  <img
+                    width="20"
+                    height="20"
+                    src="https://img.icons8.com/android/24/FFFFFF/camera.png"
+                    alt="camera"
+                  />
+                </button>
+              </div>
+            </div>
             <button
-              className="flex justify-center items-center border p-2 rounded-lg border-[#eeeeee] hover:cursor-pointer hover:bg-[#f4f4f4] active:bg-[#d6d6d6]"
+              className="flex justify-center items-center border p-2 rounded-lg border-[#eeeeee] hover:cursor-pointer hover:bg-[#f4f4f4] active:bg-[#d6d6d6] size-12"
               onClick={handleCloseProfile}
             >
               <X className="size-5" />
             </button>
           </div>
-          <div className="flex justify-center items-center">
-            <div className="size-16 rounded-xl bg-[#dcdcdc] relative flex justify-center items-center">
-              <img
-                src={
-                  updateData?.profilePic ||
-                  authUser?.profilePicUrl ||
-                  "/swipify-icon.png"
-                }
-                className="size-full"
-              />
-              <button
-                className="rounded-full border-2 border-white bg-[#E94057] absolute bottom-0 right-0 p-1 text-white translate-x-1/3 translate-y-1/3 hover:scale-125 transform transition duration-500 hover:cursor-pointer"
-                onClick={handleImageUpload}
-              >
-                <input
-                  className="hidden"
-                  type="file"
-                  onChange={loadImage}
-                  ref={imageUploadInputBoxRef}
-                />
-                <img
-                  width="20"
-                  height="20"
-                  src="https://img.icons8.com/android/24/FFFFFF/camera.png"
-                  alt="camera"
-                />
-              </button>
-            </div>
-          </div>
-          <div className="h-full flex flex-col justify-center items-center space-y-4">
+          <div className="flex flex-col justify-center items-center space-y-4">
             <form className="w-xs md:w-md h-full">
               <div className="h-full space-y-5 flex flex-col justify-center items-center">
-                <div className="w-full relative">
-                  <input
-                    className="border border-[#eeeeee] w-full h-12 rounded-md placeholder:text-[#a2a2a2] pl-3"
-                    placeholder="Bharath"
-                    value={updateData.firstName}
-                    onChange={(e) =>
-                      setUpdateData({
-                        ...updateData,
-                        firstName: e.target.value,
-                      })
-                    }
-                  />
-                  <label className="absolute top-0 left-0 -translate-y-2.5 translate-x-3 text-[#a2a2a2] bg-white text-xs">
-                    First name
-                  </label>
+                <div className="w-full flex gap-2 mt-2">
+                  <div className="w-full relative">
+                    <input
+                      className="border border-[#eeeeee] w-full h-12 rounded-md placeholder:text-[#a2a2a2] pl-3"
+                      placeholder="Bharath"
+                      value={updateData.firstName}
+                      onChange={(e) =>
+                        setUpdateData({
+                          ...updateData,
+                          firstName: e.target.value,
+                        })
+                      }
+                    />
+                    <label className="absolute top-0 left-0 -translate-y-2.5 translate-x-3 text-[#a2a2a2] bg-white text-xs">
+                      First name
+                    </label>
+                  </div>
+                  <div className="w-full relative">
+                    <input
+                      className="border border-[#eeeeee] w-full h-12 rounded-md placeholder:text-[#a2a2a2] pl-3"
+                      placeholder="Seshadri"
+                      value={updateData.lastName}
+                      onChange={(e) =>
+                        setUpdateData({
+                          ...updateData,
+                          lastName: e.target.value,
+                        })
+                      }
+                    />
+                    <label className="absolute top-0 left-0 -translate-y-2.5 translate-x-3 text-[#a2a2a2] bg-white text-xs">
+                      Last name
+                    </label>
+                  </div>
                 </div>
                 <div className="w-full relative">
-                  <input
-                    className="border border-[#eeeeee] w-full h-12 rounded-md placeholder:text-[#a2a2a2] pl-3"
-                    placeholder="Seshadri"
-                    value={updateData.lastName}
+                  <textarea
+                    className="border border-[#eeeeee] w-full h-20 rounded-md placeholder:text-black p-2 no-scrollbar"
+                    maxLength="100"
+                    placeholder="I am ..."
+                    value={updateData.bio}
                     onChange={(e) =>
-                      setUpdateData({ ...updateData, lastName: e.target.value })
+                      setUpdateData({ ...updateData, bio: e.target.value })
                     }
                   />
                   <label className="absolute top-0 left-0 -translate-y-2.5 translate-x-3 text-[#a2a2a2] bg-white text-xs">
-                    Last name
+                    Bio
                   </label>
                 </div>
                 <div className="w-full relative">
